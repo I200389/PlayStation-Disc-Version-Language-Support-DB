@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlayStation 遊戲版本語言查詢</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 20px auto; padding: 0 15px; background-color: #f4f4f9; }
+        h1 { color: #003087; text-align: center; }
+        .search-box { width: 100%; padding: 12px; font-size: 16px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
+        .game-card { background: white; padding: 15px; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .game-title { font-size: 1.2em; font-weight: bold; color: #333; margin-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #0070d1; color: white; }
+        .tag-asia { color: #e67e22; font-weight: bold; }
+        .tag-us-eu { color: #27ae60; font-weight: bold; }
+        .footer { text-align: center; margin-top: 30px; font-size: 0.9em; color: #666; }
+    </style>
+</head>
+<body>
+
+    <h1>🎮 PlayStation 遊戲版本語言查詢</h1>
+    <h1>PlayStation Game-Disc Language Enquiry</h1>
+    <p style="text-align: center;">幫助玩家確認實體版光碟是否支援指定語言</p>
+    <p style="text-align: center;">Designed to help checking whether the disc support the language you want</p>
+
+    <input type="text" id="searchInput" class="search-box" placeholder="輸入遊戲名稱搜尋/Input Game Name Here" onkeyup="searchGame()">
+
+    <div id="gameList"></div>
+
+    <div class="footer">
+        <p>想提供資料？請前往 GitHub 提交 PR 或使用Google Form</p>
+        <p>Want to provide data? Please goto GitHub to do PR or click the google form link below</p>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeOnuAVnCWp4_onjWyEAGn27TnOB_riEx62bIRtaMkpy572zA/viewform?usp=header" target="_blank" class="submit-btn">➕ 提交新遊戲資料</a>
+    </div>
+
+    <script>
+        const gameData = [
+            {
+                title: "PRAGMATA (人機迷網/虛實萬象)",
+                versions: [
+                    { region: "日本版/Japan", code: "ELJM-30823", langs: "繁體中文, 英文(English), 日文(Japanese), 韓文(Korean)" },
+                ]
+            },
+            {
+                title: "Metal Gear Solid Delta Snake Eater (合金裝備Δ 食蛇者/潛龍諜影Δ 食蛇者)",
+                versions: [
+                    { region: "亞洲版/ASIA", code: "ELAS-11046", langs: "繁體中文, 簡體中文, 英文(English), 日文(Japanese)" },
+                ]
+            }
+        ];
+
+        function displayGames(games) {
+            const container = document.getElementById('gameList');
+            container.innerHTML = '';
+
+            games.forEach(game => {
+                let tableRows = game.versions.map(v => `
+                    <tr>
+                        <td>${v.region}</td>
+                        <td><code>${v.code}</code></td>
+                        <td>${v.langs}</td>
+                    </tr>
+                `).join('');
+
+                container.innerHTML += `
+                    <div class="game-card">
+                        <div class="game-title">${game.title}</div>
+                        <table>
+                            <tr>
+                                <th>版本 / Version</th>
+                                <th>編號 / Disc-ID</th>
+                                <th>支援語言 / Supported Language</th>
+                            </tr>
+                            ${tableRows}
+                        </table>
+                    </div>
+                `;
+            });
+        }
+
+        function searchGame() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = gameData.filter(game => 
+                game.title.toLowerCase().includes(input)
+            );
+            displayGames(filtered);
+        }
+
+        displayGames(gameData);
+    </script>
+</body>
+</html>
